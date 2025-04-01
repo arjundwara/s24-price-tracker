@@ -12,11 +12,11 @@ from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
-# Email sending function
+# Email sending function using secrets from environment
 def send_email(product_details_text):
-    sender_email = "pythonlearner.test@gmail.com"
-    receiver_email = "mlarasa.007@gmail.com"
-    password = "wpof zhlq kqjq xlpt"
+    sender_email = os.environ['EMAIL_USER']
+    receiver_email = os.environ['RECEIVER']
+    password = os.environ['EMAIL_PASS']
 
     message = EmailMessage()
     message['Subject'] = "📱 New Mobile Offers Scraped from D4D Online"
@@ -81,7 +81,6 @@ for card in product_cards:
     store = store_tag.text.strip() if store_tag else 'Not available'
 
     # img_file = 'Not available'
-    # Commented: download and save image
     # if image_url:
     #     img_filename = os.path.join("s24_images", image_url.split("/")[-1])
     #     try:
@@ -110,10 +109,10 @@ def extract_price(price_str):
         return float('inf')
 
 df["Cleaned Price"] = df["Price"].apply(extract_price)
-df = df[df["Cleaned Price"] >= 1000]  # Filter prices >= 1000
+df = df[df["Cleaned Price"] >= 1000]
 df = df.sort_values(by="Cleaned Price")
 
-# Email result
+# Send Email
 if df.empty:
     print("No S24 Ultra offers >= QAR 1000 found.")
 else:
