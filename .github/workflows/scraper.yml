@@ -2,7 +2,7 @@ name: Run S24 Scraper Daily
 
 on:
   schedule:
-    - cron: "30 3,15 * * *"  # 9 AM and 9 PM IST (UTC +5:30)
+    - cron: "0 6,18 * * *"  # 9 AM and 9 PM Qatar time (UTC+3)
   workflow_dispatch:
 
 jobs:
