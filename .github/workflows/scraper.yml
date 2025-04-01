@@ -16,7 +16,7 @@ jobs:
     - name: Install Chrome and Xvfb
       run: |
         sudo apt-get update
-        sudo apt-get install -y unzip xvfb curl
+        sudo apt-get install -y unzip xvfb curl jq
         curl https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb -o chrome.deb
         sudo dpkg -i chrome.deb || sudo apt-get -f install -y
         google-chrome --version
@@ -33,8 +33,8 @@ jobs:
     - name: Download ChromeDriver
       run: |
         CHROME_VERSION=$(google-chrome --version | grep -oP '\d+\.\d+\.\d+' | head -n1)
-        DRIVER_VERSION=$(curl -s "https://googlechromelabs.github.io/chrome-for-testing/last-known-good-versions-with-downloads.json" | jq -r --arg ver "$CHROME_VERSION" '.channels.Stable.downloads.chromedriver[] | select(.platform=="linux64") | .url')
-        curl -o chromedriver.zip "$DRIVER_VERSION"
+        DRIVER_URL=$(curl -s "https://googlechromelabs.github.io/chrome-for-testing/last-known-good-versions-with-downloads.json" | jq -r --arg ver "$CHROME_VERSION" '.channels.Stable.downloads.chromedriver[] | select(.platform=="linux64") | .url')
+        curl -o chromedriver.zip "$DRIVER_URL"
         unzip chromedriver.zip
         chmod +x chromedriver
         sudo mv chromedriver /usr/local/bin/
@@ -43,6 +43,7 @@ jobs:
       env:
         EMAIL_USER: ${{ secrets.EMAIL_USER }}
         EMAIL_PASS: ${{ secrets.EMAIL_PASS }}
-        RECEIVER: mlarasa.007@gmail.com
+        RECEIVER: ${{ secrets.RECEIVER }}
       run: |
         xvfb-run --auto-servernum python scrape.py
+
