@@ -45,7 +45,7 @@ driver.get(url)
 WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.ID, "search-input")))
 search_box = driver.find_element(By.ID, "search-input")
 search_box.clear()
-search_box.send_keys("s24 ultra")
+search_box.send_keys("s25 fe")
 search_box.submit()
 time.sleep(4)
 
@@ -114,7 +114,7 @@ df = df.sort_values(by="Cleaned Price")
 
 # Send Email
 if df.empty:
-    print("No S24 Ultra offers >= QAR 1000 found.")
+    print("No S25 FE offers >= QAR 1000 found.")
 else:
     print(f"📱 Found {len(df)} offers sorted by price (>= QAR 1000).")
     email_body = "📊 Sorted Mobile Offers (QAR 1000 and above):\n\n"
